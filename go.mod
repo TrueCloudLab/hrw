@@ -1,4 +1,4 @@
-module github.com/nspcc-dev/hrw
+module github.com/TrueCloudLab/hrw
 
 go 1.14
 

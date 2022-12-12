@@ -43,7 +43,7 @@ package main
 import (
 	"fmt"
 	
-	"github.com/nspcc-dev/hrw"
+	"github.com/TrueCloudLab/hrw"
 )
 
 func main() {
