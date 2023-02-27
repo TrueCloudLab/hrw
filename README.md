@@ -14,25 +14,37 @@
 ## Benchmark:
 
 ```
-BenchmarkSort_fnv_10-8                           5000000               365 ns/op             224 B/op          3 allocs/op
-BenchmarkSort_fnv_100-8                           300000              5261 ns/op            1856 B/op          3 allocs/op
-BenchmarkSort_fnv_1000-8                           10000            119462 ns/op           16448 B/op          3 allocs/op
-BenchmarkSortByIndex_fnv_10-8                    3000000               546 ns/op             384 B/op          7 allocs/op
-BenchmarkSortByIndex_fnv_100-8                    200000              5965 ns/op            2928 B/op          7 allocs/op
-BenchmarkSortByIndex_fnv_1000-8                    10000            127732 ns/op           25728 B/op          7 allocs/op
-BenchmarkSortByValue_fnv_10-8                    2000000               962 ns/op             544 B/op         17 allocs/op
-BenchmarkSortByValue_fnv_100-8                    200000              9604 ns/op            4528 B/op        107 allocs/op
-BenchmarkSortByValue_fnv_1000-8                    10000            111741 ns/op           41728 B/op       1007 allocs/op
+BenchmarkSort_fnv_10-8                                           4812801               240.9 ns/op           216 B/op          4 allocs/op
+BenchmarkSort_fnv_100-8                                           434767              2600 ns/op            1848 B/op          4 allocs/op
+BenchmarkSort_fnv_1000-8                                           20428             66116 ns/op           16440 B/op          4 allocs/op
+BenchmarkSortByIndex_fnv_10-8                                    2505410               486.5 ns/op           352 B/op          7 allocs/op
+BenchmarkSortByIndex_fnv_100-8                                    254556              4697 ns/op            1984 B/op          7 allocs/op
+BenchmarkSortByIndex_fnv_1000-8                                    13581             88334 ns/op           16576 B/op          7 allocs/op
+BenchmarkSortByValue_fnv_10-8                                    1761030               682.1 ns/op           592 B/op         18 allocs/op
+BenchmarkSortByValue_fnv_100-8                                    258838              4675 ns/op            4480 B/op        108 allocs/op
+BenchmarkSortByValue_fnv_1000-8                                    27027             44649 ns/op           40768 B/op       1008 allocs/op
+BenchmarkSortHashersByValue_Reflection_fnv_10-8                  1013560              1249 ns/op             768 B/op         29 allocs/op
+BenchmarkSortHashersByValue_Reflection_fnv_100-8                  106029             11414 ns/op            6096 B/op        209 allocs/op
+BenchmarkSortHashersByValue_Reflection_fnv_1000-8                  10000            108977 ns/op           56784 B/op       2009 allocs/op
+BenchmarkSortHashersByValue_Typed_fnv_10-8                       1577814               700.3 ns/op           584 B/op         17 allocs/op
+BenchmarkSortHashersByValue_Typed_fnv_100-8                       215938              5024 ns/op            4472 B/op        107 allocs/op
+BenchmarkSortHashersByValue_Typed_fnv_1000-8                       24447             46889 ns/op           40760 B/op       1007 allocs/op
 
-BenchmarkSortByWeight_fnv_10-8                   3000000               501 ns/op             320 B/op          4 allocs/op
-BenchmarkSortByWeight_fnv_100-8                   200000              8495 ns/op            2768 B/op          4 allocs/op
-BenchmarkSortByWeight_fnv_1000-8                   10000            197880 ns/op           24656 B/op          4 allocs/op
-BenchmarkSortByWeightIndex_fnv_10-8              2000000               702 ns/op             480 B/op          8 allocs/op
-BenchmarkSortByWeightIndex_fnv_100-8              200000              9338 ns/op            3840 B/op          8 allocs/op
-BenchmarkSortByWeightIndex_fnv_1000-8              10000            204669 ns/op           33936 B/op          8 allocs/op
-BenchmarkSortByWeightValue_fnv_10-8              1000000              1083 ns/op             640 B/op         18 allocs/op
-BenchmarkSortByWeightValue_fnv_100-8              200000             11444 ns/op            5440 B/op        108 allocs/op
-BenchmarkSortByWeightValue_fnv_1000-8              10000            148471 ns/op           49936 B/op       1008 allocs/op
+BenchmarkSortByWeight_fnv_10-8                                   2924833               370.6 ns/op           448 B/op          8 allocs/op
+BenchmarkSortByWeight_fnv_100-8                                   816069              1516 ns/op            2896 B/op          8 allocs/op
+BenchmarkSortByWeight_fnv_1000-8                                   80391             17478 ns/op           24784 B/op          8 allocs/op
+BenchmarkSortByWeightIndex_fnv_10-8                              1945612               550.3 ns/op           368 B/op          7 allocs/op
+BenchmarkSortByWeightIndex_fnv_100-8                              140473              8084 ns/op            2000 B/op          7 allocs/op
+BenchmarkSortByWeightIndex_fnv_1000-8                               5518            200949 ns/op           16592 B/op          7 allocs/op
+BenchmarkSortByWeightValue_fnv_10-8                              1305580               909.8 ns/op           608 B/op         18 allocs/op
+BenchmarkSortByWeightValue_fnv_100-8                              165410              6796 ns/op            4496 B/op        108 allocs/op
+BenchmarkSortByWeightValue_fnv_1000-8                              17922             78555 ns/op           40784 B/op       1008 allocs/op
+BenchmarkSortHashersByWeightValueReflection_fnv_10-8              454976              2229 ns/op             784 B/op         29 allocs/op
+BenchmarkSortHashersByWeightValueReflection_fnv_100-8              76264             15332 ns/op            6112 B/op        209 allocs/op
+BenchmarkSortHashersByWeightValueReflection_fnv_1000-8             80288             13192 ns/op            6112 B/op        209 allocs/op
+BenchmarkSortHashersByWeightValueTyped_fnv_10-8                  1433113               901.4 ns/op           600 B/op         17 allocs/op
+BenchmarkSortHashersByWeightValueTyped_fnv_100-8                  188626              5896 ns/op            4488 B/op        107 allocs/op
+BenchmarkSortHashersByWeightValueTyped_fnv_1000-8                 178131              6518 ns/op            4488 B/op        107 allocs/op
 ```
 
 ## Example
