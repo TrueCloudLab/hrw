@@ -83,12 +83,34 @@ func SortSliceByValue(slice interface{}, hash uint64) {
 	}
 }
 
+// SortHasherSliceByValue receives []Hasher and hash to sort by value-distance.
+func SortHasherSliceByValue[T Hasher](slice []T, hash uint64) {
+	rule := prepareHasherRule(slice)
+	if rule != nil {
+		swap := func(i, j int) {
+			slice[i], slice[j] = slice[j], slice[i]
+		}
+		sortByDistance(len(rule), false, rule, hash, swap)
+	}
+}
+
 // SortSliceByWeightValue received []T, weights and hash to sort by value-distance * weights
 func SortSliceByWeightValue(slice interface{}, weights []float64, hash uint64) {
 	rule := prepareRule(slice)
 	if rule != nil {
 		swap := reflect.Swapper(slice)
 		sortByWeight(reflect.ValueOf(slice).Len(), false, rule, weights, hash, swap)
+	}
+}
+
+// SortHasherSliceByWeightValue receives []Hasher, weights and hash to sort by value-distance * weights.
+func SortHasherSliceByWeightValue[T Hasher](slice []T, weights []float64, hash uint64) {
+	rule := prepareHasherRule(slice)
+	if rule != nil {
+		swap := func(i, j int) {
+			slice[i], slice[j] = slice[j], slice[i]
+		}
+		sortByWeight(len(slice), false, rule, weights, hash, swap)
 	}
 }
 
@@ -197,6 +219,18 @@ func prepareRule(slice interface{}) []uint64 {
 		}
 	}
 	return rule
+}
+
+func prepareHasherRule[T Hasher](hashers []T) []uint64 {
+	length := len(hashers)
+	if length == 0 {
+		return nil
+	}
+	result := make([]uint64, length)
+	for i := 0; i < length; i++ {
+		result[i] = hashers[i].Hash()
+	}
+	return result
 }
 
 // ValidateWeights checks if weights are normalized between 0.0 and 1.0

@@ -131,6 +131,23 @@ func TestSortSliceByValueHasher(t *testing.T) {
 	require.Equal(t, expect, actual)
 }
 
+func TestSortHasherSliceByValue(t *testing.T) {
+	actual := []hashString{"a", "b", "c", "d", "e", "f"}
+	expect := []hashString{"d", "f", "c", "b", "a", "e"}
+	hash := Hash(testKey)
+	SortHasherSliceByValue(actual, hash)
+	require.EqualValues(t, expect, actual)
+}
+
+func TestSortHasherSliceByWeightValue(t *testing.T) {
+	actual := []hashString{"a", "b", "c", "d", "e", "f"}
+	weights := []float64{1.0, 1.0, 1.0, 1.0, 1.0, 1.0}
+	expect := []hashString{"d", "f", "c", "b", "a", "e"}
+	hash := Hash(testKey)
+	SortHasherSliceByWeightValue(actual, weights, hash)
+	require.EqualValues(t, expect, actual)
+}
+
 func TestSortSliceByValueIntSlice(t *testing.T) {
 	cases := []slices{
 		{
@@ -636,6 +653,36 @@ func BenchmarkSortByValue_fnv_1000(b *testing.B) {
 	benchmarkSortByValue(b, 1000, hash)
 }
 
+func BenchmarkSortHashersByValue_Reflection_fnv_10(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueReflection(b, 10, hash)
+}
+
+func BenchmarkSortHashersByValue_Reflection_fnv_100(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueReflection(b, 100, hash)
+}
+
+func BenchmarkSortHashersByValue_Reflection_fnv_1000(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueReflection(b, 1000, hash)
+}
+
+func BenchmarkSortHashersByValue_Typed_fnv_10(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueTyped(b, 10, hash)
+}
+
+func BenchmarkSortHashersByValue_Typed_fnv_100(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueTyped(b, 100, hash)
+}
+
+func BenchmarkSortHashersByValue_Typed_fnv_1000(b *testing.B) {
+	hash := Hash(testKey)
+	benchmarkSortHashersByValueTyped(b, 1000, hash)
+}
+
 func BenchmarkSortByWeight_fnv_10(b *testing.B) {
 	hash := Hash(testKey)
 	_ = benchmarkSortByWeight(b, 10, hash)
@@ -679,6 +726,30 @@ func BenchmarkSortByWeightValue_fnv_100(b *testing.B) {
 func BenchmarkSortByWeightValue_fnv_1000(b *testing.B) {
 	hash := Hash(testKey)
 	benchmarkSortByWeightValue(b, 1000, hash)
+}
+
+func BenchmarkSortHashersByWeightValueReflection_fnv_10(b *testing.B) {
+	benchmarkSortHashersByWeightValueRelection(b, 10, Hash(testKey))
+}
+
+func BenchmarkSortHashersByWeightValueReflection_fnv_100(b *testing.B) {
+	benchmarkSortHashersByWeightValueRelection(b, 100, Hash(testKey))
+}
+
+func BenchmarkSortHashersByWeightValueReflection_fnv_1000(b *testing.B) {
+	benchmarkSortHashersByWeightValueRelection(b, 100, Hash(testKey))
+}
+
+func BenchmarkSortHashersByWeightValueTyped_fnv_10(b *testing.B) {
+	benchmarkSortHashersByWeightValueTyped(b, 10, Hash(testKey))
+}
+
+func BenchmarkSortHashersByWeightValueTyped_fnv_100(b *testing.B) {
+	benchmarkSortHashersByWeightValueTyped(b, 100, Hash(testKey))
+}
+
+func BenchmarkSortHashersByWeightValueTyped_fnv_1000(b *testing.B) {
+	benchmarkSortHashersByWeightValueTyped(b, 100, Hash(testKey))
 }
 
 func benchmarkSort(b *testing.B, n int, hash uint64) uint64 {
@@ -772,5 +843,65 @@ func benchmarkSortByWeightValue(b *testing.B, n int, hash uint64) {
 
 	for i := 0; i < b.N; i++ {
 		SortSliceByWeightValue(servers, weights, hash)
+	}
+}
+
+func benchmarkSortHashersByWeightValueRelection(b *testing.B, n int, hash uint64) {
+	servers := make([]hashString, n)
+	weights := make([]float64, n)
+	for i := uint64(0); i < uint64(len(servers)); i++ {
+		weights[i] = float64(uint64(n)-i) / float64(n)
+		servers[i] = hashString("localhost:" + strconv.FormatUint(60000-i, 10))
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		SortSliceByWeightValue(servers, weights, hash)
+	}
+}
+
+func benchmarkSortHashersByWeightValueTyped(b *testing.B, n int, hash uint64) {
+	servers := make([]hashString, n)
+	weights := make([]float64, n)
+	for i := uint64(0); i < uint64(len(servers)); i++ {
+		weights[i] = float64(uint64(n)-i) / float64(n)
+		servers[i] = hashString("localhost:" + strconv.FormatUint(60000-i, 10))
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		SortHasherSliceByWeightValue(servers, weights, hash)
+	}
+}
+
+func benchmarkSortHashersByValueReflection(b *testing.B, n int, hash uint64) {
+	servers := make([]hashString, n)
+	for i := uint64(0); i < uint64(len(servers)); i++ {
+		servers[i] = hashString("localhost:" + strconv.FormatUint(60000-i, 10))
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		SortSliceByValue(servers, hash)
+	}
+}
+
+func benchmarkSortHashersByValueTyped(b *testing.B, n int, hash uint64) {
+	servers := make([]hashString, n)
+	for i := uint64(0); i < uint64(len(servers)); i++ {
+		servers[i] = hashString("localhost:" + strconv.FormatUint(60000-i, 10))
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		SortHasherSliceByValue(servers, hash)
 	}
 }
